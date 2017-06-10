@@ -3,7 +3,7 @@
 // @name:zh         YouTube自動點讚
 // @name:ja         YouTubeのような自動
 // @namespace       https://github.com/HatScripts/YouTubeAutoLiker
-// @version         1.0.0
+// @version         1.0.1
 // @description     Automatically likes videos of channels you're subscribed to
 // @description:zh  對您訂閲的頻道視頻自動點讚
 // @description:ja  このスクリプトは、あなたが購読しているチャンネルの動画を自動的に好きです
@@ -27,27 +27,32 @@
     var version = GM_info.script.version
     var debugEnabled = version === 'DEV_VERSION'
     var debug = new Debugger(name, debugEnabled)
+    var options = {
+        checkFrequency: 5000,
+        watchThreshold: 0.5,
+        closeShareTab:  true,
+    };
 
-    setTimeout(wait, 5000)
+    setTimeout(wait, options.checkFrequency)
 
-    function videoHalfWatched() {
+    function watchThresholdReached() {
         var player = document.querySelector("#movie_player")
         if (player) {
-            return player.getCurrentTime() / player.getDuration() >= 0.5
+            return player.getCurrentTime() / player.getDuration() >= options.watchThreshold
         }
         return true
     }
 
     function wait() {
-        if (videoHalfWatched()) {
+        if (watchThresholdReached()) {
             try {
                 like()
             } catch (e) {
                 debug.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
-                setTimeout(wait, 5000)
+                setTimeout(wait, options.checkFrequency)
             }
         } else {
-            setTimeout(wait, 5000)
+            setTimeout(wait, options.checkFrequency)
         }
     }
 
@@ -72,7 +77,9 @@
             debug.info('It\'s unclicked. Clicking it...')
             likeBtn.click()
             debug.info('Successfully liked video')
-            setTimeout(closeShareTab, 100)
+            if (options.closeShareTab) {
+                setTimeout(closeShareTab, 100)
+            }
         }
     }
 
