@@ -2,7 +2,7 @@
 
 This userscript automatically likes videos of channels you're subscribed to on [YouTube](https://www.youtube.com/), after you've watched at least half of the video.
 
-### Download
+## Download
 This is a userscript. To use it you'll first need one of the following browser extensions/add-ons:
 
 |   | Tampermonkey | Greasemonkey | Violentmonkey |
@@ -15,8 +15,7 @@ This is a userscript. To use it you'll first need one of the following browser e
 
 If you already have one of the above, install this script from one of the following links:
 * [GitHub](https://github.com/HatScripts/YouTubeAutoLiker/raw/master/youtube-auto-liker.user.js)
-* <s>GreasyFork</s> TODO
-* <s>OpenUserJS</s> TODO
+* [OpenUserJS](https://openuserjs.org/install/HatScripts/YouTube_Auto-Liker.user.js)
 
 ## Todo
 
