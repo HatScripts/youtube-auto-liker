@@ -4,7 +4,7 @@ function Debugger(name, enabled) {
         return function () {
         }
     }
-    for (var m in console) {
+    for (let m in console) {
         if (typeof console[m] === 'function') {
             if (enabled) {
                 this.debug[m] = console[m].bind(window.console + ': ' + name + ': ')
