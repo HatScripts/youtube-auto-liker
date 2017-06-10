@@ -22,34 +22,39 @@
 
 (function () {
     'use strict'
-
-    const name = GM_info.script.name
-    const version = GM_info.script.version
-    const debugEnabled = version === 'DEV_VERSION'
-    const debug = new Debugger(name, debugEnabled)
-    const options = {
-        checkFrequency: 5000,
-        watchThreshold: 0.5,
-        closeShareTab:  true,
+    
+    const DEBUG_ENABLED = GM_info.script.version === 'DEV_VERSION'
+    const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
+    const OPTIONS = {
+        CHECK_FREQUENCY: 5000,
+        WATCH_THRESHOLD: 0.5,
+        CLOSE_SHARE_TAB: true,
     }
+    const SELECTORS = {
+        PLAYER:                 '#movie_player',
+        SUBSCRIPTION_BUTTON:    '.yt-uix-subscription-button',
+        LIKE_BUTTON:            '.like-button-renderer-like-button:not(.hid)',
+        SHARE_TAB_CLOSE_BUTTON: '#watch-action-panels:not(.hid) #action-panel-dismiss',
+    }
+    const LIKE_BUTTON_CLICKED_CLASS = 'like-button-renderer-like-button-clicked'
 
-    setTimeout(wait, options.checkFrequency)
+    setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
 
     function watchThresholdReached() {
-        let player = document.querySelector("#movie_player")
+        let player = document.querySelector(SELECTORS.PLAYER)
         if (player) {
-            return player.getCurrentTime() / player.getDuration() >= options.watchThreshold
+            return player.getCurrentTime() / player.getDuration() >= OPTIONS.WATCH_THRESHOLD
         }
         return true
     }
 
     function isSubscribed() {
-        debug.info('Checking whether subscribed...')
-        let subBtn = document.querySelector('.yt-uix-subscription-button')
-        if (!subBtn) {
+        DEBUG.info('Checking whether subscribed...')
+        let subscriptionButton = document.querySelector(SELECTORS.SUBSCRIPTION_BUTTON)
+        if (!subscriptionButton) {
             throw 'Couldn\'t find sub button'
         }
-        return subBtn.dataset.isSubscribed
+        return subscriptionButton.dataset.isSubscribed
     }
 
     function wait() {
@@ -59,38 +64,38 @@
                     like()
                 }
             } catch (e) {
-                debug.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
-                setTimeout(wait, options.checkFrequency)
+                DEBUG.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
+                setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
             }
         } else {
-            setTimeout(wait, options.checkFrequency)
+            setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
         }
     }
 
     function like() {
-        debug.info('Trying to like video...')
-        let likeBtn = document.querySelector('.like-button-renderer-like-button:not(.hid)')
-        if (!likeBtn) {
+        DEBUG.info('Trying to like video...')
+        let likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
+        if (!likeButton) {
             throw 'Couldn\'t find like button'
         }
-        if (likeBtn.classList.contains('like-button-renderer-like-button-clicked')) {
-            debug.info('Like button has already been clicked')
+        if (likeButton.classList.contains(LIKE_BUTTON_CLICKED_CLASS)) {
+            DEBUG.info('Like button has already been clicked')
         } else {
-            debug.info('Found like button')
-            debug.info('It\'s unclicked. Clicking it...')
-            likeBtn.click()
-            debug.info('Successfully liked video')
-            if (options.closeShareTab) {
+            DEBUG.info('Found like button')
+            DEBUG.info('It\'s unclicked. Clicking it...')
+            likeButton.click()
+            DEBUG.info('Successfully liked video')
+            if (OPTIONS.CLOSE_SHARE_TAB) {
                 setTimeout(closeShareTab, 100)
             }
         }
     }
 
     function closeShareTab() {
-        let dismissBtn = document.querySelector('#watch-action-panels:not(.hid) #action-panel-dismiss')
-        if (dismissBtn) {
-            debug.info('Closing share tab...')
-            dismissBtn.click()
+        let closeButton = document.querySelector(SELECTORS.SHARE_TAB_CLOSE_BUTTON)
+        if (closeButton) {
+            DEBUG.info('Closing share tab...')
+            closeButton.click()
         }
     }
 }())
