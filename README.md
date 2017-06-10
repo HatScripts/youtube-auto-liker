@@ -1,4 +1,4 @@
-# YouTube Auto-Liker <img src="logo.svg" alt="logo" height="48px" align="right">
+# YouTube Auto-Liker <img src="https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg" alt="logo" height="48px" align="right">
 
 This userscript automatically likes videos of channels you're subscribed to on [YouTube](https://www.youtube.com/), after you've watched at least half of the video.
 
