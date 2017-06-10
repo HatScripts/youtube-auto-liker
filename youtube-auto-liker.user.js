@@ -23,30 +23,41 @@
 (function () {
     'use strict'
 
-    var name = GM_info.script.name
-    var version = GM_info.script.version
-    var debugEnabled = version === 'DEV_VERSION'
-    var debug = new Debugger(name, debugEnabled)
-    var options = {
+    const name = GM_info.script.name
+    const version = GM_info.script.version
+    const debugEnabled = version === 'DEV_VERSION'
+    const debug = new Debugger(name, debugEnabled)
+    const options = {
         checkFrequency: 5000,
         watchThreshold: 0.5,
         closeShareTab:  true,
-    };
+    }
 
     setTimeout(wait, options.checkFrequency)
 
     function watchThresholdReached() {
-        var player = document.querySelector("#movie_player")
+        let player = document.querySelector("#movie_player")
         if (player) {
             return player.getCurrentTime() / player.getDuration() >= options.watchThreshold
         }
         return true
     }
 
+    function isSubscribed() {
+        debug.info('Checking whether subscribed...')
+        let subBtn = document.querySelector('.yt-uix-subscription-button')
+        if (!subBtn) {
+            throw 'Couldn\'t find sub button'
+        }
+        return subBtn.dataset.isSubscribed
+    }
+
     function wait() {
         if (watchThresholdReached()) {
             try {
-                like()
+                if (isSubscribed()) {
+                    like()
+                }
             } catch (e) {
                 debug.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
                 setTimeout(wait, options.checkFrequency)
@@ -58,15 +69,7 @@
 
     function like() {
         debug.info('Trying to like video...')
-        var subBtn = document.querySelector('.yt-uix-subscription-button')
-        if (!subBtn) {
-            throw 'Couldn\'t find sub button'
-        }
-        if (!subBtn.dataset.isSubscribed) {
-            debug.info('Not subscribed to channel')
-            return true
-        }
-        var likeBtn = document.querySelector('.like-button-renderer-like-button:not(.hid)')
+        let likeBtn = document.querySelector('.like-button-renderer-like-button:not(.hid)')
         if (!likeBtn) {
             throw 'Couldn\'t find like button'
         }
@@ -84,7 +87,7 @@
     }
 
     function closeShareTab() {
-        var dismissBtn = document.querySelector('#watch-action-panels:not(.hid) #action-panel-dismiss')
+        let dismissBtn = document.querySelector('#watch-action-panels:not(.hid) #action-panel-dismiss')
         if (dismissBtn) {
             debug.info('Closing share tab...')
             dismissBtn.click()
