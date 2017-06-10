@@ -26,12 +26,9 @@ This userscript automatically likes videos of channels you're subscribed to on [
     ----------------------------- | ----------- | -----------------
     Like if subscribed            | `true`      | Whether to like videos by any of your subscriptions.
     Specific channels             | `[]`        | A list of channels to like the videos of.
-    Like after % of video watched | `0.5`       | The percentage of the video watched before liking:
-    |                             |             | ![](readme-images/video-half-watched.png)
-    Close share tab               | `true`      | Close the Share tab which gets shown after liking:
-    |                             |             | ![](readme-images/share-tab.png)
-    Hide like notifications       | `false`     | Hide "Added to Liked videos" notifications:
-    |                             |             | ![](readme-images/like-notification.png)
+    Like after % of video watched | `0.5`       | <p>The percentage of the video watched before liking:</p>![](readme-images/video-half-watched.png)
+    Close share tab               | `true`      | <p>Close the Share tab which gets shown after liking:</p>![](readme-images/share-tab.png)
+    Hide like notifications       | `false`     | <p>Hide "Added to Liked videos" notifications:</p>![](readme-images/like-notification.png)
     Retries                       | `5`         | How many times to retry liking upon failure.
     Retry frequency               | `5000`      | The frequency of the retries, in milliseconds.
 
