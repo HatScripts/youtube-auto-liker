@@ -22,13 +22,18 @@ If you already have one of the above, install this script from one of the follow
 - [ ] Hide "Added to Liked videos" notifications
 - [ ] Add user options:
 
-Option                        | Default
------------------------------ | -------
-Like if subscribed            | `true`
-Specific channels             | `[]`
-Like after % of video watched | `0.5`
-Close share tab               | `true`
-Hide "liked" notification     | `false`
+Option                        | Default     | Description/image
+----------------------------- | ----------- | -----------------
+Like if subscribed            | `true`      | Whether to like videos by any of your subscriptions.
+Specific channels             | `[]`        | A list of channels to like the videos of.
+Like after % of video watched | `0.5`       | The percentage of the video watched before liking:
+|                             |             | ![](readme-images/video-half-watched.png)
+Close share tab               | `true`      | Close the Share tab which gets shown after liking:
+|                             |             | ![](readme-images/share-tab.png)
+Hide like notifications       | `false`     | Hide "Added to Liked videos" notifications:
+|                             |             | ![](readme-images/like-notification.png)
+Retries                       | `5`         | How many times to retry liking upon failure.
+Retry frequency               | `5000`      | The frequency of the retries, in milliseconds.
 
 ## Credits
 
