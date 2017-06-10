@@ -15,7 +15,7 @@
 // @icon            logo.svg
 // @match           http://*.youtube.com/watch*
 // @match           https://*.youtube.com/watch*
-// @require         debugger.min.js
+// @require         https://github.com/HatScripts/YouTubeAutoLiker/raw/master/debugger.min.js
 // @run-at          document-idle
 // @noframes
 // ==/UserScript==
@@ -43,7 +43,7 @@
             try {
                 like()
             } catch (e) {
-                debug.info('Failed to like video: ' + e + '. Will try again 5 seconds...')
+                debug.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
                 setTimeout(wait, 5000)
             }
         } else {
