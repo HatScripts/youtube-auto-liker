@@ -1,22 +1,21 @@
 // ==UserScript==
-// @name            YouTube Auto-Liker
-// @name:zh         YouTube自動點讚
-// @name:ja         YouTubeのような自動
-// @namespace       https://github.com/HatScripts/YouTubeAutoLiker
-// @version         1.0.1
-// @description     Automatically likes videos of channels you're subscribed to
-// @description:zh  對您訂閲的頻道視頻自動點讚
-// @description:ja  このスクリプトは、あなたが購読しているチャンネルの動画を自動的に好きです
-// @description:ru  Этот сценарий автоматически нравится видео каналов, на которые вы подписаны
-// @description:es  A este script le gustan los videos de los canales a los que está suscrito
-// @description:pt  Este script gosta automaticamente dos vídeos dos canais aos quais está inscrito
-// @description:fil Ang script na ito ay awtomatikong may gusto mga video ng channel kung saan ka naka-subscribe
-// @author          HatScripts
-// @icon            https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg
-// @match           http://*.youtube.com/watch*
-// @match           https://*.youtube.com/watch*
-// @require         https://github.com/HatScripts/YouTubeAutoLiker/raw/master/debugger.min.js
-// @run-at          document-idle
+// @name           YouTube Auto-Liker
+// @name:zh        YouTube自動點讚
+// @name:ja        YouTubeのような自動
+// @namespace      https://github.com/HatScripts/YouTubeAutoLiker
+// @version        1.0.2
+// @description    Automatically likes videos of channels you're subscribed to
+// @description:zh 對您訂閲的頻道視頻自動點讚
+// @description:ja このスクリプトは、あなたが購読しているチャンネルの動画を自動的に好きです
+// @description:ru Этот сценарий автоматически нравится видео каналов, на которые вы подписаны
+// @description:es A este script le gustan los videos de los canales a los que está suscrito
+// @description:pt Este script gosta automaticamente dos vídeos dos canais aos quais está inscrito
+// @author         HatScripts
+// @icon           https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg
+// @match          http://*.youtube.com/watch*
+// @match          https://*.youtube.com/watch*
+// @require        https://github.com/HatScripts/YouTubeAutoLiker/raw/master/debugger.min.js
+// @run-at         document-idle
 // @noframes
 // ==/UserScript==
 
