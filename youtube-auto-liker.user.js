@@ -12,7 +12,7 @@
 // @description:pt  Este script gosta automaticamente dos vídeos dos canais aos quais está inscrito
 // @description:fil Ang script na ito ay awtomatikong may gusto mga video ng channel kung saan ka naka-subscribe
 // @author          HatScripts
-// @icon            logo.svg
+// @icon            https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg
 // @match           http://*.youtube.com/watch*
 // @match           https://*.youtube.com/watch*
 // @require         https://github.com/HatScripts/YouTubeAutoLiker/raw/master/debugger.min.js
@@ -22,7 +22,7 @@
 
 (function () {
     'use strict'
-    
+
     const DEBUG_ENABLED = GM_info.script.version === 'DEV_VERSION'
     const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
     const OPTIONS = {
