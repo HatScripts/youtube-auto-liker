@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/YouTubeAutoLiker
-// @version        1.0.2
+// @version        1.1.0
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja このスクリプトは、あなたが購読しているチャンネルの動画を自動的に好きです
@@ -27,15 +27,13 @@
     const OPTIONS = {
         CHECK_FREQUENCY: 5000,
         WATCH_THRESHOLD: 0.5,
-        CLOSE_SHARE_TAB: true,
     }
     const SELECTORS = {
-        PLAYER:                 '#movie_player',
-        SUBSCRIPTION_BUTTON:    '.yt-uix-subscription-button',
-        LIKE_BUTTON:            '.like-button-renderer-like-button:not(.hid)',
-        SHARE_TAB_CLOSE_BUTTON: '#watch-action-panels:not(.hid) #action-panel-dismiss',
+        PLAYER:              '#movie_player',
+        SUBSCRIPTION_BUTTON: '.ytd-subscribe-button-renderer',
+        LIKE_BUTTON:         '#top-level-buttons > ytd-toggle-button-renderer:nth-child(1)',
     }
-    const LIKE_BUTTON_CLICKED_CLASS = 'like-button-renderer-like-button-clicked'
+    const LIKE_BUTTON_CLICKED_CLASS = 'style-default-active'
 
     setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
 
@@ -53,14 +51,17 @@
         if (!subscriptionButton) {
             throw 'Couldn\'t find sub button'
         }
-        return subscriptionButton.dataset.isSubscribed
+        return subscriptionButton.hasAttribute('subscribed')
     }
 
     function wait() {
         if (watchThresholdReached()) {
             try {
                 if (isSubscribed()) {
+                    DEBUG.info('We are subscribed')
                     like()
+                } else {
+                    DEBUG.info('We are not subscribed')
                 }
             } catch (e) {
                 DEBUG.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
@@ -84,17 +85,6 @@
             DEBUG.info('It\'s unclicked. Clicking it...')
             likeButton.click()
             DEBUG.info('Successfully liked video')
-            if (OPTIONS.CLOSE_SHARE_TAB) {
-                setTimeout(closeShareTab, 100)
-            }
-        }
-    }
-
-    function closeShareTab() {
-        let closeButton = document.querySelector(SELECTORS.SHARE_TAB_CLOSE_BUTTON)
-        if (closeButton) {
-            DEBUG.info('Closing share tab...')
-            closeButton.click()
         }
     }
 }())
