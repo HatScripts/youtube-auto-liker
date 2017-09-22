@@ -31,7 +31,7 @@
     const SELECTORS = {
         PLAYER:              '#movie_player',
         SUBSCRIPTION_BUTTON: '#subscribe-button paper-button, .yt-uix-subscription-button',
-        LIKE_BUTTON:         '#top-level-buttons > ytd-toggle-button-renderer:nth-child(1), .like-button-renderer-like-button:not(.hid)',
+        LIKE_BUTTON:         'ytd-video-primary-info-renderer #top-level-buttons > ytd-toggle-button-renderer:nth-child(1), .like-button-renderer-like-button:not(.hid)',
     }
     const LIKE_BUTTON_CLICKED_CLASSES = ['style-default-active', 'like-button-renderer-like-button-clicked']
 
