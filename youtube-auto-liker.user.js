@@ -14,7 +14,7 @@
 // @icon           https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg
 // @match          http://*.youtube.com/watch*
 // @match          https://*.youtube.com/watch*
-// @require        https://github.com/HatScripts/YouTubeAutoLiker/raw/master/debugger.min.js
+// @require        https://greasyfork.org/scripts/33864-debugger/code/Debugger.js?version=222487
 // @run-at         document-idle
 // @noframes
 // ==/UserScript==
