@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/YouTubeAutoLiker
-// @version        1.1.4
+// @version        1.2.0
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja このスクリプトは、あなたが購読しているチャンネルの動画を自動的に好きです
@@ -35,7 +35,19 @@
     }
     const LIKE_BUTTON_CLICKED_CLASSES = ['style-default-active', 'like-button-renderer-like-button-clicked']
 
+    let autoLikedVideoIds = []
+
     setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
+
+    function getVideoId() {
+        let elem = document.querySelector('#page-manager > ytd-watch-flexy')
+        if (elem && elem.hasAttribute('video-id')) {
+            return elem.getAttribute('video-id')
+        } else {
+            let queryString = window.location.search
+            return queryString.substr(queryString.indexOf('v=') + 2, 11)
+        }
+    }
 
     function watchThresholdReached() {
         let player = document.querySelector(SELECTORS.PLAYER)
@@ -65,11 +77,9 @@
                 }
             } catch (e) {
                 DEBUG.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
-                setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
             }
-        } else {
-            setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
         }
+        setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
     }
 
     function like() {
@@ -78,14 +88,18 @@
         if (!likeButton) {
             throw 'Couldn\'t find like button'
         }
-        if (LIKE_BUTTON_CLICKED_CLASSES.some(function (c) {
-                return likeButton.classList.contains(c)
-            })) {
+        let videoId = getVideoId()
+        if (LIKE_BUTTON_CLICKED_CLASSES.some(c => likeButton.classList.contains(c))) {
             DEBUG.info('Like button has already been clicked')
+            autoLikedVideoIds.push(videoId)
+        } else if (autoLikedVideoIds.includes(videoId)) {
+            DEBUG.info('Video has already been auto-liked. User must ' +
+                'have un-liked it, so we won\'t like it again')
         } else {
             DEBUG.info('Found like button')
             DEBUG.info('It\'s unclicked. Clicking it...')
             likeButton.click()
+            autoLikedVideoIds.push(videoId)
             DEBUG.info('Successfully liked video')
         }
     }
