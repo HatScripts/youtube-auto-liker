@@ -11,6 +11,7 @@
 // @description:es Le gustan automáticamente los videos de los canales a los que está suscrito
 // @description:pt Gosta automaticamente de vídeos de canais nos quais você está inscrito
 // @author         HatScripts
+// @license        MIT
 // @icon           https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg
 // @match          http://*.youtube.com/watch*
 // @match          https://*.youtube.com/watch*
