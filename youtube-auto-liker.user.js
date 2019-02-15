@@ -13,8 +13,8 @@
 // @author         HatScripts
 // @license        MIT
 // @icon           https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg
-// @match          http://*.youtube.com/watch*
-// @match          https://*.youtube.com/watch*
+// @match          http://*.youtube.com/*
+// @match          https://*.youtube.com/*
 // @require        https://greasyfork.org/scripts/33864-debugger/code/Debugger.js
 // @run-at         document-idle
 // @noframes
