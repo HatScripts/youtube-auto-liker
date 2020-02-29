@@ -35,6 +35,6 @@ This userscript automatically likes videos of channels you're subscribed to on [
 
 ## Acknowledgements
 
-- The userscript itself was based on [this one](https://greasyfork.org/en/scripts/4948-youtube-auto-like-videos), which hasn't worked since 2015
-- Debugger code was adapted from [this Stack Overflow answer](http://stackoverflow.com/a/32928812/2203482)
+- The userscript itself was inspired by [this one](https://greasyfork.org/en/scripts/4948-youtube-auto-like-videos) by JoeSimmons, which hasn't worked since 2015
+- [Debugger code](https://github.com/HatScripts/YouTubeAutoLiker/blob/master/debugger.js) was adapted from [this Stack Overflow answer](http://stackoverflow.com/a/32928812/2203482) by arctelix
 - Icons by [Icons8](https://icons8.com/)
