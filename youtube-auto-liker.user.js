@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.2.5
+// @version        1.2.6
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -50,11 +50,11 @@
   }
   const SELECTORS = {
     PLAYER:              '#movie_player',
-    SUBSCRIPTION_BUTTON: '#subscribe-button paper-button, .yt-uix-subscription-button',
-    LIKE_BUTTON:         'ytd-video-primary-info-renderer #top-level-buttons > ytd-toggle-button-renderer:nth-child(1), .like-button-renderer-like-button:not(.hid)',
+    SUBSCRIPTION_BUTTON: '#subscribe-button paper-button',
+    LIKE_BUTTON:         'ytd-video-primary-info-renderer #top-level-buttons > ytd-toggle-button-renderer:nth-child(1)',
     NOTIFICATION:        'ytd-popup-container',
   }
-  const LIKE_BUTTON_CLICKED_CLASSES = ['style-default-active', 'like-button-renderer-like-button-clicked']
+  const LIKE_BUTTON_CLICKED_CLASS = 'style-default-active'
 
   let autoLikedVideoIds = []
 
@@ -84,7 +84,7 @@
     if (!subscriptionButton) {
       throw Error('Couldn\'t find sub button')
     }
-    return subscriptionButton.hasAttribute('subscribed') || subscriptionButton.dataset.isSubscribed
+    return subscriptionButton.hasAttribute('subscribed')
   }
 
   function wait () {
@@ -125,7 +125,7 @@
       throw Error('Couldn\'t find like button')
     }
     let videoId = getVideoId()
-    if (LIKE_BUTTON_CLICKED_CLASSES.some(c => likeButton.classList.contains(c))) {
+    if (likeButton.classList.contains(LIKE_BUTTON_CLICKED_CLASS)) {
       DEBUG.info('Like button has already been clicked')
       autoLikedVideoIds.push(videoId)
     } else if (autoLikedVideoIds.includes(videoId)) {
