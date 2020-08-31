@@ -50,7 +50,7 @@
   }
   const SELECTORS = {
     PLAYER:              '#movie_player',
-    SUBSCRIPTION_BUTTON: '#subscribe-button paper-button',
+    SUBSCRIPTION_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > paper-button',
     LIKE_BUTTON:         'ytd-video-primary-info-renderer #top-level-buttons > ytd-toggle-button-renderer:nth-child(1)',
     NOTIFICATION:        'ytd-popup-container',
   }
