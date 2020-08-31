@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/YouTubeAutoLiker
-// @version        1.2.4
+// @version        1.2.5
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -15,15 +15,33 @@
 // @icon           https://cdn.rawgit.com/HatScripts/YouTubeAutoLiker/master/logo.svg
 // @match          http://*.youtube.com/*
 // @match          https://*.youtube.com/*
-// @require        https://greasyfork.org/scripts/33864-debugger/code/Debugger.js
 // @run-at         document-idle
 // @noframes
 // ==/UserScript==
 
-/* global GM_info, Debugger */
+/* global GM_info */
 
 (function () {
   'use strict'
+
+  function Debugger (name, enabled) {
+    this.debug = {}
+    if (!window.console) {
+      return function () {
+      }
+    }
+    for (let m in console) {
+      if (typeof console[m] === 'function') {
+        if (enabled) {
+          this.debug[m] = console[m].bind(window.console + ': ' + name + ': ')
+        } else {
+          this.debug[m] = function () {
+          }
+        }
+      }
+    }
+    return this.debug
+  }
 
   const DEBUG_ENABLED = GM_info.script.version === 'DEV_VERSION'
   const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
