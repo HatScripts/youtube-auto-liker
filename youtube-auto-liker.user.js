@@ -12,7 +12,7 @@
 // @description:pt Gosta automaticamente de vídeos de canais nos quais você está inscrito
 // @author         HatScripts
 // @license        MIT
-// @icon           https://cdn.rawgit.com/HatScripts/youtube-auto-liker/master/logo.svg
+// @icon           https://raw.githubusercontent.com/HatScripts/youtube-auto-liker/master/logo.svg
 // @match          http://*.youtube.com/*
 // @match          https://*.youtube.com/*
 // @run-at         document-idle
