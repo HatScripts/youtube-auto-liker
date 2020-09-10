@@ -49,10 +49,10 @@
     HIDE_LIKE_NOTIFICATION: false,
   }
   const SELECTORS = {
-    PLAYER:              '#movie_player',
-    SUBSCRIPTION_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > paper-button',
-    LIKE_BUTTON:         'ytd-video-primary-info-renderer #top-level-buttons > ytd-toggle-button-renderer:nth-child(1)',
-    NOTIFICATION:        'ytd-popup-container',
+    PLAYER:           '#movie_player',
+    SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > paper-button',
+    LIKE_BUTTON:      'ytd-video-primary-info-renderer #top-level-buttons > ytd-toggle-button-renderer:nth-child(1)',
+    NOTIFICATION:     'ytd-popup-container',
   }
   const LIKE_BUTTON_CLICKED_CLASS = 'style-default-active'
 
@@ -80,11 +80,11 @@
 
   function isSubscribed () {
     DEBUG.info('Checking whether subscribed...')
-    let subscriptionButton = document.querySelector(SELECTORS.SUBSCRIPTION_BUTTON)
-    if (!subscriptionButton) {
+    let subscribeButton = document.querySelector(SELECTORS.SUBSCRIBE_BUTTON)
+    if (!subscribeButton) {
       throw Error('Couldn\'t find sub button')
     }
-    return subscriptionButton.hasAttribute('subscribed')
+    return subscribeButton.hasAttribute('subscribed')
   }
 
   function wait () {
