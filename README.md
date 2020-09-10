@@ -8,14 +8,14 @@ This userscript automatically likes videos of channels you're subscribed to on [
 
    |   | Tampermonkey | Greasemonkey | Violentmonkey |
    |---|--------------|--------------|---------------|
-   ![Chrome](https://hatscripts.com/a.svg?i=chrome&w=24 "Chrome") | [Link](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) ([Beta](https://chrome.google.com/webstore/detail/tampermonkey-beta/gcalenpjmijncebpfijmoaglllgpjagf)) | - | [Link](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag)
-   ![Firefox](https://hatscripts.com/a.svg?i=firefox&w=24 "Firefox") | [Link](https://addons.mozilla.org/firefox/addon/tampermonkey/) | [Link](https://addons.mozilla.org/firefox/addon/greasemonkey/) | - |
-   ![Edge](https://hatscripts.com/a.svg?i=microsoft-edge&w=24 "Edge") | [Link](https://www.microsoft.com/store/apps/9NBLGGH5162S) | - | - |
-   ![Safari](https://hatscripts.com/a.svg?i=safari&w=24 "Safari") | [Link](https://safari.tampermonkey.net/tampermonkey.safariextz) | - | - |
-   ![Opera](https://hatscripts.com/a.svg?i=opera&w=24 "Opera") | [Link](https://addons.opera.com/extensions/details/tampermonkey-beta/) | - | [Link](https://addons.opera.com/extensions/details/violent-monkey/)
+   ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_24x24.png "Chrome") | [Link](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) ([Beta](https://chrome.google.com/webstore/detail/tampermonkey-beta/gcalenpjmijncebpfijmoaglllgpjagf)) | - | [Link](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag)
+   ![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_24x24.png "Firefox") | [Link](https://addons.mozilla.org/firefox/addon/tampermonkey/) | [Link](https://addons.mozilla.org/firefox/addon/greasemonkey/) | - |
+   ![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_24x24.png "Edge") | [Link](https://www.microsoft.com/store/apps/9NBLGGH5162S) | - | - |
+   ![Safari](https://raw.githubusercontent.com/alrra/browser-logos/main/src/safari/safari_24x24.png "Safari") | [Link](https://safari.tampermonkey.net/tampermonkey.safariextz) | - | - |
+   ![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_24x24.png "Opera") | [Link](https://addons.opera.com/extensions/details/tampermonkey-beta/) | - | [Link](https://addons.opera.com/extensions/details/violent-monkey/)
 
 2. Then install this script from one of the following links:
-* [GitHub](https://github.com/HatScripts/YouTubeAutoLiker/raw/master/youtube-auto-liker.user.js)
+* [GitHub](https://github.com/HatScripts/YouTubeAutoLiker/raw/master/youtube-auto-liker.user.js) (Recommended)
 * [Greasy Fork](https://greasyfork.org/en/scripts/33865-youtube-auto-liker)
 * [OpenUserJS](https://openuserjs.org/scripts/HatScripts/YouTube_Auto-Liker)
 
@@ -35,6 +35,5 @@ This userscript automatically likes videos of channels you're subscribed to on [
 
 ## Acknowledgements
 
-- The userscript itself was based on [this one](https://greasyfork.org/en/scripts/4948-youtube-auto-like-videos), which hasn't worked since 2015
-- Debugger code was adapted from [this Stack Overflow answer](http://stackoverflow.com/a/32928812/2203482)
-- Icons by [Icons8](https://icons8.com/)
+- The userscript itself was inspired by [this one](https://greasyfork.org/en/scripts/4948-youtube-auto-like-videos) by JoeSimmons, which hasn't worked since 2015
+- [Debugger code](https://github.com/HatScripts/YouTubeAutoLiker/blob/master/debugger.js) was adapted from [this Stack Overflow answer](http://stackoverflow.com/a/32928812/2203482) by arctelix
