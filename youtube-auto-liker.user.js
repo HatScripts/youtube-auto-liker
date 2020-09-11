@@ -44,10 +44,10 @@
   const DEBUG_ENABLED = GM_info.script.version === 'DEV_VERSION'
   const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
   const OPTIONS = {
-    CHECK_FREQUENCY:         5000,
-    WATCH_THRESHOLD:         0.5,
-    HIDE_LIKE_NOTIFICATION:  false,
-    ONLY_LIKE_IF_SUBSCRIBED: true,
+    CHECK_FREQUENCY:        5000,
+    WATCH_THRESHOLD:        0.5,
+    HIDE_LIKE_NOTIFICATION: false,
+    LIKE_IF_NOT_SUBSCRIBED: false,
   }
   const SELECTORS = {
     PLAYER:           '#movie_player',
@@ -92,7 +92,7 @@
   function wait () {
     if (watchThresholdReached()) {
       try {
-        if (!OPTIONS.ONLY_LIKE_IF_SUBSCRIBED || isSubscribed()) {
+        if (OPTIONS.LIKE_IF_NOT_SUBSCRIBED || isSubscribed()) {
           like()
         }
       } catch (e) {
