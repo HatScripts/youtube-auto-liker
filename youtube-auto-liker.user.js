@@ -97,7 +97,7 @@
           like()
         }
       } catch (e) {
-        DEBUG.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
+        DEBUG.info(`Failed to like video: ${e}. Will try again in ${OPTIONS.CHECK_FREQUENCY} ms...`)
       }
     }
     setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
