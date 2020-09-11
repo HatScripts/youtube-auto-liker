@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.2.6
+// @version        1.3.0
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -44,9 +44,10 @@
   const DEBUG_ENABLED = GM_info.script.version === 'DEV_VERSION'
   const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
   const OPTIONS = {
-    CHECK_FREQUENCY:        5000,
-    WATCH_THRESHOLD:        0.5,
-    HIDE_LIKE_NOTIFICATION: false,
+    CHECK_FREQUENCY:         5000,
+    WATCH_THRESHOLD:         0.5,
+    HIDE_LIKE_NOTIFICATION:  false,
+    ONLY_LIKE_IF_SUBSCRIBED: true,
   }
   const SELECTORS = {
     PLAYER:           '#movie_player',
@@ -84,17 +85,16 @@
     if (!subscribeButton) {
       throw Error('Couldn\'t find sub button')
     }
-    return subscribeButton.hasAttribute('subscribed')
+    let subscribed = subscribeButton.hasAttribute('subscribed')
+    DEBUG.info(subscribed ? 'We are subscribed' : 'We are not subscribed')
+    return subscribed
   }
 
   function wait () {
     if (watchThresholdReached()) {
       try {
-        if (isSubscribed()) {
-          DEBUG.info('We are subscribed')
+        if (!OPTIONS.ONLY_LIKE_IF_SUBSCRIBED || isSubscribed()) {
           like()
-        } else {
-          DEBUG.info('We are not subscribed')
         }
       } catch (e) {
         DEBUG.info('Failed to like video: ' + e + '. Will try again in 5 seconds...')
