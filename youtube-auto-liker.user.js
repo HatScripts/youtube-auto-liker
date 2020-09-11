@@ -66,8 +66,7 @@
     if (elem && elem.hasAttribute('video-id')) {
       return elem.getAttribute('video-id')
     } else {
-      let queryString = window.location.search
-      return queryString.substr(queryString.indexOf('v=') + 2, 11)
+      return new URLSearchParams(window.location.search).get('v')
     }
   }
 
