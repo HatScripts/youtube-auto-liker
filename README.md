@@ -52,7 +52,8 @@ Option                   | Description                                          
 
 * Add options:
   * Retries - How many times to retry liking upon failure.
-  * Specific channels - A list of channels to like the videos of, regardless of whether you're subscribed to them.
+  * Whitelisted channels - A list of channels to *always* like the videos of, even if you are *not* subscribed to them.
+  * Blacklisted channels - A list of channels to *never* like the videos of, even if you are subscribed to them.
 * Add a UI so that the user can configure the options without needing to manually edit the script.
 
 ## Acknowledgements
