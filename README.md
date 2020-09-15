@@ -34,19 +34,26 @@ This userscript automatically likes videos of channels you're subscribed to on [
 * [Greasy Fork](https://greasyfork.org/en/scripts/33865-youtube-auto-liker)
 * [OpenUserJS](https://openuserjs.org/scripts/HatScripts/YouTube_Auto-Liker)
 
-## Todo
+## Options
 
-- [ ] Hide "Added to Liked videos" notifications
-- [ ] Add user options:
+You can configure the following options by editing `OPTIONS` within the script.
 
-    Option                        | Default     | Description/image
-    ----------------------------- | ----------- | -----------------
-    Like if subscribed            | `true`      | Whether to like videos by any of your subscriptions.
-    Specific channels             | `[]`        | A list of channels to like the videos of.
-    Like after % of video watched | `0.5`       | <p>The percentage of the video watched before liking:</p>![](readme-images/video-half-watched.png)
-    Hide like notifications       | `false`     | <p>Hide "Added to Liked videos" notifications:</p>![](readme-images/like-notification.png)
-    Retries                       | `5`         | How many times to retry liking upon failure.
-    Retry frequency               | `5000`      | The frequency of the retries, in milliseconds.
+Option                 | Description                                                       | Default setting 
+---------------------- | ----------------------------------------------------------------- | ---------------
+CHECK_FREQUENCY        | How often to attempt liking the video.                            | `5000`          
+WATCH_THRESHOLD        | <p>The percentage of the video watched before liking.</p>![][im1] | `0.5`
+HIDE_LIKE_NOTIFICATION | <p>Hide like notifications.</p>![][im2]                           | `false`
+LIKE_IF_NOT_SUBSCRIBED | Whether to like videos when you are not subscribed.               | `false`
+
+[im1]: readme-images/video-half-watched.png
+[im2]: readme-images/like-notification.png
+
+## TODO
+
+* Add options:
+  * Retries - How many times to retry liking upon failure.
+  * Specific channels - A list of channels to like the videos of, regardless of whether you're subscribed to them.
+* Add a UI so that the user can configure the options without needing to manually edit the script.
 
 ## Acknowledgements
 
