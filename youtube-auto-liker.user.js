@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.3
+// @version        1.3.4
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -15,6 +15,10 @@
 // @icon           https://raw.githubusercontent.com/HatScripts/youtube-auto-liker/master/logo.svg
 // @match          http://*.youtube.com/*
 // @match          https://*.youtube.com/*
+// @require        https://openuserjs.org/src/libs/sizzle/GM_config.js
+// @grant          GM_getValue
+// @grant          GM_setValue
+// @grant          GM_registerMenuCommand
 // @run-at         document-idle
 // @noframes
 // ==/UserScript==
@@ -23,6 +27,43 @@
 
 (() => {
   'use strict'
+
+  GM_config.init({
+    id: "YouTubeAL_config",
+    title: "YouTube Auto-Liker - Configuration",
+    fields: {
+    CHECK_FREQUENCY: {
+      label: "Check Frequency (ms)",
+      type: "number",
+      min: 1,
+      default: 5000,
+      title: "The number of miliseconds to wait between checking if video should be liked",
+    },
+    WATCH_THRESHOLD: {
+      label: "Watch Threshold %",
+      type: "number",
+      min: 1,
+      max: 100,
+      default: 50,
+      title: "The percentage watched to like the video at",
+    },
+    HIDE_LIKE_NOTIFICATION: {
+      label: "Hide Like Notification?",
+      type: "checkbox",
+      default: false,
+    },
+    LIKE_IF_NOT_SUBSCRIBED: {
+      label: "Like if not Subscribed?",
+      type: "checkbox",
+      default: false,
+      title: "Life Videos from channeles you are not subscribed to?",
+    },
+    }
+  });
+
+  GM_registerMenuCommand("YouTube Auto-Liker - Config", () => {
+    GM_config.open();
+  });
 
   function Debugger (name, enabled) {
     this.debug = {}
@@ -43,12 +84,7 @@
 
   const DEBUG_ENABLED = GM_info.script.version === 'DEV_VERSION'
   const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
-  const OPTIONS = {
-    CHECK_FREQUENCY:        5000,
-    WATCH_THRESHOLD:        0.5,
-    HIDE_LIKE_NOTIFICATION: false,
-    LIKE_IF_NOT_SUBSCRIBED: false,
-  }
+
   const SELECTORS = {
     PLAYER:           '#movie_player',
     SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button',
@@ -59,7 +95,7 @@
 
   let autoLikedVideoIds = []
 
-  setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
+  setTimeout(wait, GM_config.get("CHECK_FREQUENCY"))
 
   function getVideoId () {
     let elem = document.querySelector('#page-manager > ytd-watch-flexy')
@@ -73,7 +109,7 @@
   function watchThresholdReached () {
     let player = document.querySelector(SELECTORS.PLAYER)
     if (player) {
-      return player.getCurrentTime() / player.getDuration() >= OPTIONS.WATCH_THRESHOLD
+      return player.getCurrentTime() / player.getDuration() >= (GM_config.get("WATCH_THRESHOLD")/100)
     }
     return true
   }
@@ -92,14 +128,14 @@
   function wait () {
     if (watchThresholdReached()) {
       try {
-        if (OPTIONS.LIKE_IF_NOT_SUBSCRIBED || isSubscribed()) {
+        if (GM_config.get("LIKE_IF_NOT_SUBSCRIBED") || isSubscribed()) {
           like()
         }
       } catch (e) {
-        DEBUG.info(`Failed to like video: ${e}. Will try again in ${OPTIONS.CHECK_FREQUENCY} ms...`)
+        DEBUG.info(`Failed to like video: ${e}. Will try again in ${GM_config.get("CHECK_FREQUENCY")} ms...`)
       }
     }
-    setTimeout(wait, OPTIONS.CHECK_FREQUENCY)
+    setTimeout(wait, GM_config.get("CHECK_FREQUENCY"))
   }
 
   function hideLikeNotification () {
@@ -132,7 +168,7 @@
         'have un-liked it, so we won\'t like it again')
     } else {
       DEBUG.info('Found like button')
-      if (OPTIONS.HIDE_LIKE_NOTIFICATION) {
+      if (GM_config.get("HIDE_LIKE_NOTIFICATION")) {
         hideLikeNotification()
       }
       DEBUG.info('It\'s unclicked. Clicking it...')
