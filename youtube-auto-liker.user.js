@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.4
+// @version        1.3.5
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -32,6 +32,12 @@
     id: 'ytal_config',
     title: 'YouTube Auto-Liker Settings',
     fields: {
+      DEBUG_MODE: {
+        label: 'Debug mode',
+        type: 'checkbox',
+        default: false,
+        title: 'Log debug messages to the console'
+      },
       CHECK_FREQUENCY: {
         label: 'Check frequency (ms)',
         type: 'number',
@@ -82,8 +88,7 @@
     return this.debug
   }
 
-  const DEBUG_ENABLED = GM_info.script.version === 'DEV_VERSION'
-  const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
+  const DEBUG = new Debugger(GM_info.script.name, GM_config.get('DEBUG_MODE'))
 
   const SELECTORS = {
     PLAYER: '#movie_player',
