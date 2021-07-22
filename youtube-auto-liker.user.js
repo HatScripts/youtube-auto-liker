@@ -23,54 +23,54 @@
 // @noframes
 // ==/UserScript==
 
-/* global GM_info */
+/* global GM_config, GM_info, GM_registerMenuCommand */
 
 (() => {
   'use strict'
 
   GM_config.init({
-    id: "YouTubeAL_config",
-    title: "YouTube Auto-Liker - Configuration",
+    id: 'ytal_config',
+    title: 'YouTube Auto-Liker Settings',
     fields: {
-    CHECK_FREQUENCY: {
-      label: "Check Frequency (ms)",
-      type: "number",
-      min: 1,
-      default: 5000,
-      title: "The number of miliseconds to wait between checking if video should be liked",
-    },
-    WATCH_THRESHOLD: {
-      label: "Watch Threshold %",
-      type: "number",
-      min: 1,
-      max: 100,
-      default: 50,
-      title: "The percentage watched to like the video at",
-    },
-    HIDE_LIKE_NOTIFICATION: {
-      label: "Hide Like Notification?",
-      type: "checkbox",
-      default: false,
-    },
-    LIKE_IF_NOT_SUBSCRIBED: {
-      label: "Like if not Subscribed?",
-      type: "checkbox",
-      default: false,
-      title: "Life Videos from channeles you are not subscribed to?",
-    },
+      CHECK_FREQUENCY: {
+        label: 'Check frequency (ms)',
+        type: 'number',
+        min: 1,
+        default: 5000,
+        title: 'The number of milliseconds to wait between checking if video should be liked'
+      },
+      WATCH_THRESHOLD: {
+        label: 'Watch threshold %',
+        type: 'number',
+        min: 0,
+        max: 100,
+        default: 50,
+        title: 'The percentage watched to like the video at'
+      },
+      HIDE_LIKE_NOTIFICATION: {
+        label: 'Hide like notification',
+        type: 'checkbox',
+        default: false
+      },
+      LIKE_IF_NOT_SUBSCRIBED: {
+        label: 'Like if not subscribed',
+        type: 'checkbox',
+        default: false,
+        title: 'Like videos from channels you are not subscribed to'
+      }
     }
-  });
+  })
 
-  GM_registerMenuCommand("YouTube Auto-Liker - Config", () => {
-    GM_config.open();
-  });
+  GM_registerMenuCommand('Settings', () => {
+    GM_config.open()
+  })
 
   function Debugger (name, enabled) {
     this.debug = {}
     if (!window.console) {
       return () => {}
     }
-    for (let m in console) {
+    for (const m in console) {
       if (typeof console[m] === 'function') {
         if (enabled) {
           this.debug[m] = console[m].bind(window.console, name + ': ')
@@ -86,19 +86,19 @@
   const DEBUG = new Debugger(GM_info.script.name, DEBUG_ENABLED)
 
   const SELECTORS = {
-    PLAYER:           '#movie_player',
+    PLAYER: '#movie_player',
     SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button',
-    LIKE_BUTTON:      'ytd-video-primary-info-renderer #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)',
-    NOTIFICATION:     'ytd-popup-container',
+    LIKE_BUTTON: 'ytd-video-primary-info-renderer #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)',
+    NOTIFICATION: 'ytd-popup-container'
   }
   const LIKE_BUTTON_CLICKED_CLASS = 'style-default-active'
 
-  let autoLikedVideoIds = []
+  const autoLikedVideoIds = []
 
-  setTimeout(wait, GM_config.get("CHECK_FREQUENCY"))
+  setTimeout(wait, GM_config.get('CHECK_FREQUENCY'))
 
   function getVideoId () {
-    let elem = document.querySelector('#page-manager > ytd-watch-flexy')
+    const elem = document.querySelector('#page-manager > ytd-watch-flexy')
     if (elem && elem.hasAttribute('video-id')) {
       return elem.getAttribute('video-id')
     } else {
@@ -107,20 +107,20 @@
   }
 
   function watchThresholdReached () {
-    let player = document.querySelector(SELECTORS.PLAYER)
+    const player = document.querySelector(SELECTORS.PLAYER)
     if (player) {
-      return player.getCurrentTime() / player.getDuration() >= (GM_config.get("WATCH_THRESHOLD")/100)
+      return player.getCurrentTime() / player.getDuration() >= (GM_config.get('WATCH_THRESHOLD') / 100)
     }
     return true
   }
 
   function isSubscribed () {
     DEBUG.info('Checking whether subscribed...')
-    let subscribeButton = document.querySelector(SELECTORS.SUBSCRIBE_BUTTON)
+    const subscribeButton = document.querySelector(SELECTORS.SUBSCRIBE_BUTTON)
     if (!subscribeButton) {
       throw Error('Couldn\'t find sub button')
     }
-    let subscribed = subscribeButton.hasAttribute('subscribed')
+    const subscribed = subscribeButton.hasAttribute('subscribed')
     DEBUG.info(subscribed ? 'We are subscribed' : 'We are not subscribed')
     return subscribed
   }
@@ -128,19 +128,19 @@
   function wait () {
     if (watchThresholdReached()) {
       try {
-        if (GM_config.get("LIKE_IF_NOT_SUBSCRIBED") || isSubscribed()) {
+        if (GM_config.get('LIKE_IF_NOT_SUBSCRIBED') || isSubscribed()) {
           like()
         }
       } catch (e) {
-        DEBUG.info(`Failed to like video: ${e}. Will try again in ${GM_config.get("CHECK_FREQUENCY")} ms...`)
+        DEBUG.info(`Failed to like video: ${e}. Will try again in ${GM_config.get('CHECK_FREQUENCY')} ms...`)
       }
     }
-    setTimeout(wait, GM_config.get("CHECK_FREQUENCY"))
+    setTimeout(wait, GM_config.get('CHECK_FREQUENCY'))
   }
 
   function hideLikeNotification () {
     DEBUG.info('Trying to hide notification...')
-    let notification = document.querySelector(SELECTORS.NOTIFICATION)
+    const notification = document.querySelector(SELECTORS.NOTIFICATION)
     if (notification) {
       DEBUG.info('Found notification. Hiding it...')
       notification.style.display = 'none'
@@ -155,11 +155,11 @@
 
   function like () {
     DEBUG.info('Trying to like video...')
-    let likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
+    const likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
     if (!likeButton) {
       throw Error('Couldn\'t find like button')
     }
-    let videoId = getVideoId()
+    const videoId = getVideoId()
     if (likeButton.classList.contains(LIKE_BUTTON_CLICKED_CLASS)) {
       DEBUG.info('Like button has already been clicked')
       autoLikedVideoIds.push(videoId)
@@ -168,7 +168,7 @@
         'have un-liked it, so we won\'t like it again')
     } else {
       DEBUG.info('Found like button')
-      if (GM_config.get("HIDE_LIKE_NOTIFICATION")) {
+      if (GM_config.get('HIDE_LIKE_NOTIFICATION')) {
         hideLikeNotification()
       }
       DEBUG.info('It\'s unclicked. Clicking it...')
