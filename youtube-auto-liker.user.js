@@ -30,7 +30,7 @@
 
   GM_config.init({
     id: 'ytal_config',
-    title: 'YouTube Auto-Liker Settings',
+    title: GM_info.script.name + ' Settings',
     fields: {
       DEBUG_MODE: {
         label: 'Debug mode',
