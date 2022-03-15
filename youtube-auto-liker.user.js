@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.5
+// @version        1.3.6
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -13,7 +13,7 @@
 // @author         HatScripts
 // @license        MIT
 // @icon           https://raw.githubusercontent.com/HatScripts/youtube-auto-liker/master/logo.svg
-// @downlaodurl    https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js
+// @downloadurl    https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js
 // @updateurl      https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js
 // @match          http://*.youtube.com/*
 // @match          https://*.youtube.com/*
