@@ -13,6 +13,8 @@
 // @author         HatScripts
 // @license        MIT
 // @icon           https://raw.githubusercontent.com/HatScripts/youtube-auto-liker/master/logo.svg
+// @downlaodurl    https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js
+// @updateurl      https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js
 // @match          http://*.youtube.com/*
 // @match          https://*.youtube.com/*
 // @require        https://openuserjs.org/src/libs/sizzle/GM_config.js
