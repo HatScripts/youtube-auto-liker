@@ -95,7 +95,7 @@
   const SELECTORS = {
     PLAYER: '#movie_player',
     SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button',
-    LIKE_BUTTON: '#actions #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)',
+    LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)',
     NOTIFICATION: 'ytd-popup-container'
   }
   const LIKE_BUTTON_CLICKED_CLASS = 'style-default-active'
