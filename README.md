@@ -36,17 +36,15 @@ This userscript automatically likes videos of channels you're subscribed to on [
 
 ## Options
 
-You can configure the following options by editing `OPTIONS` within the script.
+You can configure the options by clicking the 'Settings' button under 'YouTube Auto-Liker' in your userscript manager.
 
-Option                   | Description                                                       | Default
------------------------- | ----------------------------------------------------------------- | -------
-`CHECK_FREQUENCY`        | How often to attempt liking the video.                            | `5000`
-`WATCH_THRESHOLD`        | <p>The percentage of the video watched before liking.</p>![][im1] | `0.5`
-`HIDE_LIKE_NOTIFICATION` | <p>Hide like notifications.</p>![][im2]                           | `false`
-`LIKE_IF_NOT_SUBSCRIBED` | Whether to like videos when you are not subscribed.               | `false`
-
-[im1]: readme-images/video-half-watched.png
-[im2]: readme-images/like-notification.png
+Option                 | Description                                         | Default
+---------------------- | --------------------------------------------------- | -------
+Debug mode             | Log debug messages to the console                   | off
+Check frequency        | How often to attempt liking the video               | 5000 ms
+Watch threshold        | The percentage of the video watched before liking   | 50%
+Hide like notification | Hide like notification                              | off
+Like if not subscribed | Like videos from channels you are not subscribed to | off
 
 ## TODO
 
@@ -54,7 +52,6 @@ Option                   | Description                                          
   * Retries - How many times to retry liking upon failure.
   * Whitelisted channels - A list of channels to *always* like the videos of, even if you are *not* subscribed to them.
   * Blacklisted channels - A list of channels to *never* like the videos of, even if you are subscribed to them.
-* Add a UI so that the user can configure the options without needing to manually edit the script.
 
 ## Acknowledgements
 
