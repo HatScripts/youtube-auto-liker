@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.11
+// @version        1.3.12
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -98,7 +98,6 @@
     LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
     NOTIFICATION: 'ytd-popup-container'
   }
-  const LIKE_BUTTON_CLICKED_CLASS = 'style-default-active'
 
   const autoLikedVideoIds = []
 
@@ -167,7 +166,8 @@
       throw Error('Couldn\'t find like button')
     }
     const videoId = getVideoId()
-    if (likeButton.classList.contains(LIKE_BUTTON_CLICKED_CLASS)) {
+    if (likeButton.classList.contains('style-default-active') ||
+        likeButton.getAttribute('aria-pressed') === 'true') {
       DEBUG.info('Like button has already been clicked')
       autoLikedVideoIds.push(videoId)
     } else if (autoLikedVideoIds.includes(videoId)) {
