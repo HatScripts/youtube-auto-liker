@@ -34,9 +34,9 @@ This userscript automatically likes videos of channels you're subscribed to on [
    * [Greasy Fork](https://greasyfork.org/en/scripts/33865-youtube-auto-liker)
    * [OpenUserJS](https://openuserjs.org/scripts/HatScripts/YouTube_Auto-Liker)
 
-## Options
+## Settings
 
-You can configure the options by clicking the 'Settings' button under 'YouTube Auto-Liker' in your userscript manager.
+You can configure the settings by clicking the 'Settings' button under 'YouTube Auto-Liker' in your userscript manager.
 
 Option                 | Description                                         | Default
 ---------------------- | --------------------------------------------------- | -------
@@ -48,7 +48,7 @@ Like if not subscribed | Like videos from channels you are not subscribed to | o
 
 ## TODO
 
-* Add options:
+* Add settings:
   * Retries - How many times to retry liking upon failure.
   * Whitelisted channels - A list of channels to *always* like the videos of, even if you are *not* subscribed to them.
   * Blacklisted channels - A list of channels to *never* like the videos of, even if you are subscribed to them.
