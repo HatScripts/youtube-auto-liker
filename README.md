@@ -38,7 +38,7 @@ This userscript automatically likes videos of channels you're subscribed to on [
 
 You can configure the settings by clicking the 'Settings' button under 'YouTube Auto-Liker' in your userscript manager.
 
-Option                 | Description                                         | Default
+Setting                | Description                                         | Default
 ---------------------- | --------------------------------------------------- | -------
 Debug mode             | Log debug messages to the console                   | off
 Check frequency        | How often to attempt liking the video               | 5000 ms
