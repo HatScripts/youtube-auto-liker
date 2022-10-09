@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.12
+// @version        1.3.13
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -115,7 +115,12 @@
   function watchThresholdReached () {
     const player = document.querySelector(SELECTORS.PLAYER)
     if (player) {
-      return player.getCurrentTime() / player.getDuration() >= (GM_config.get('WATCH_THRESHOLD') / 100)
+      const watched = player.getCurrentTime() / player.getDuration()
+      const watchedTarget = GM_config.get('WATCH_THRESHOLD') / 100
+      if (watched < watchedTarget) {
+        DEBUG.info(`Waiting until watch threshold reached (${watched.toFixed(2)}/${watchedTarget})...`)
+        return false
+      }
     }
     return true
   }
