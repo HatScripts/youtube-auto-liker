@@ -57,4 +57,4 @@ Like if not subscribed | Like videos from channels you are not subscribed to | o
 
 * The userscript itself was inspired by [this one](https://web.archive.org/web/20220405112705/https://greasyfork.org/en/scripts/4948-youtube-auto-like-videos/code) by JoeSimmons, which hasn't worked since 2015
 * The debugger code was adapted from [this Stack Overflow answer](https://stackoverflow.com/a/32928812/2203482) by arctelix
-* [GM_config](https://github.com/sizzlemctwizzle/GM_config) by sizzlemctwizzle is used for the settings interface
+* The settings interface uses [GM_config](https://github.com/sizzlemctwizzle/GM_config) by sizzlemctwizzle
