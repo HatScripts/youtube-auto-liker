@@ -182,7 +182,7 @@
       autoLikedVideoIds.push(videoId)
     } else if (dislikeButton.classList.contains('style-default-active') ||
       dislikeButton.getAttribute('aria-pressed') === 'true') {
-      DEBUG.info('disliked already lol')
+      DEBUG.info('The dislike button has been clicked.')
     } else if (autoLikedVideoIds.includes(videoId)) {
       DEBUG.info('Video has already been auto-liked. User must ' +
         'have un-liked it, so we won\'t like it again')
