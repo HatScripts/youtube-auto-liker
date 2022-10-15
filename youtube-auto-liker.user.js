@@ -96,6 +96,7 @@
     PLAYER: '#movie_player',
     SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button',
     LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
+    DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2)',
     NOTIFICATION: 'ytd-popup-container'
   }
 
@@ -167,14 +168,21 @@
   function like () {
     DEBUG.info('Trying to like video...')
     const likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
+    const dislikeButton = document.querySelector(SELECTORS.DISLIKE_BUTTON)
     if (!likeButton) {
       throw Error('Couldn\'t find like button')
     }
+    if (!dislikeButton) {
+      throw Error('Couldn\'t find dislike button')
+    }
     const videoId = getVideoId()
     if (likeButton.classList.contains('style-default-active') ||
-        likeButton.getAttribute('aria-pressed') === 'true') {
+      likeButton.getAttribute('aria-pressed') === 'true') {
       DEBUG.info('Like button has already been clicked')
       autoLikedVideoIds.push(videoId)
+    } else if (dislikeButton.classList.contains('style-default-active') ||
+      dislikeButton.getAttribute('aria-pressed') === 'true') {
+      DEBUG.info('disliked already lol')
     } else if (autoLikedVideoIds.includes(videoId)) {
       DEBUG.info('Video has already been auto-liked. User must ' +
         'have un-liked it, so we won\'t like it again')
