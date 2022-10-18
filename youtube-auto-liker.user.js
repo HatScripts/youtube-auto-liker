@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.14
+// @version        1.3.15
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -182,7 +182,7 @@
       autoLikedVideoIds.push(videoId)
     } else if (dislikeButton.classList.contains('style-default-active') ||
       dislikeButton.getAttribute('aria-pressed') === 'true') {
-      DEBUG.info('The dislike button has been clicked.')
+      DEBUG.info('Dislike button has already been clicked')
     } else if (autoLikedVideoIds.includes(videoId)) {
       DEBUG.info('Video has already been auto-liked. User must ' +
         'have un-liked it, so we won\'t like it again')
