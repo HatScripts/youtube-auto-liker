@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.17
+// @version        1.3.18
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -144,6 +144,11 @@
     setTimeout(wait, GM_config.get('CHECK_FREQUENCY'))
   }
 
+  function isButtonPressed(button) {
+    return button.classList.contains('style-default-active') ||
+      button.getAttribute('aria-pressed') === 'true'
+  }
+
   function like () {
     DEBUG.info('Trying to like video...')
     const likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
@@ -155,22 +160,23 @@
       throw Error('Couldn\'t find dislike button')
     }
     const videoId = getVideoId()
-    if (likeButton.classList.contains('style-default-active') ||
-      likeButton.getAttribute('aria-pressed') === 'true') {
+    if (isButtonPressed(likeButton)) {
       DEBUG.info('Like button has already been clicked')
       autoLikedVideoIds.push(videoId)
-    } else if (dislikeButton.classList.contains('style-default-active') ||
-      dislikeButton.getAttribute('aria-pressed') === 'true') {
+    } else if (isButtonPressed(dislikeButton)) {
       DEBUG.info('Dislike button has already been clicked')
     } else if (autoLikedVideoIds.includes(videoId)) {
       DEBUG.info('Video has already been auto-liked. User must ' +
         'have un-liked it, so we won\'t like it again')
     } else {
-      DEBUG.info('Found like button')
-      DEBUG.info('It\'s unclicked. Clicking it...')
+      DEBUG.info('Found like button. It\'s unclicked. Clicking it...')
       likeButton.click()
-      autoLikedVideoIds.push(videoId)
-      DEBUG.info('Successfully liked video')
+      if (isButtonPressed(likeButton)) {
+        autoLikedVideoIds.push(videoId)
+        DEBUG.info('Successfully liked video')
+      } else {
+        DEBUG.info('Failed to like video')
+      }
     }
   }
 })()
