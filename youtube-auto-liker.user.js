@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.18
+// @version        1.3.19
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -96,7 +96,7 @@
 
   const autoLikedVideoIds = []
 
-  setTimeout(wait, GM_config.get('CHECK_FREQUENCY'))
+  setInterval(wait, GM_config.get('CHECK_FREQUENCY'))
 
   function getVideoId () {
     const elem = document.querySelector('#page-manager > ytd-watch-flexy')
@@ -141,7 +141,6 @@
         DEBUG.info(`Failed to like video: ${e}. Will try again in ${GM_config.get('CHECK_FREQUENCY')} ms...`)
       }
     }
-    setTimeout(wait, GM_config.get('CHECK_FREQUENCY'))
   }
 
   function isButtonPressed(button) {
