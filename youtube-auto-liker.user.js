@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.16
+// @version        1.3.17
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -55,11 +55,6 @@
         default: 50,
         title: 'The percentage watched to like the video at'
       },
-      HIDE_LIKE_NOTIFICATION: {
-        label: 'Hide like notification',
-        type: 'checkbox',
-        default: false
-      },
       LIKE_IF_NOT_SUBSCRIBED: {
         label: 'Like if not subscribed',
         type: 'checkbox',
@@ -96,8 +91,7 @@
     PLAYER: '#movie_player',
     SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button',
     LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
-    DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2), #segmented-dislike-button button',
-    NOTIFICATION: 'ytd-popup-container'
+    DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2), #segmented-dislike-button button'
   }
 
   const autoLikedVideoIds = []
@@ -150,21 +144,6 @@
     setTimeout(wait, GM_config.get('CHECK_FREQUENCY'))
   }
 
-  function hideLikeNotification () {
-    DEBUG.info('Trying to hide notification...')
-    const notification = document.querySelector(SELECTORS.NOTIFICATION)
-    if (notification) {
-      DEBUG.info('Found notification. Hiding it...')
-      notification.style.display = 'none'
-      setTimeout(() => {
-        DEBUG.info('Un-hiding notification')
-        notification.style.removeProperty('display')
-      }, 5000)
-    } else {
-      DEBUG.info('Couldn\'t find notification')
-    }
-  }
-
   function like () {
     DEBUG.info('Trying to like video...')
     const likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
@@ -188,9 +167,6 @@
         'have un-liked it, so we won\'t like it again')
     } else {
       DEBUG.info('Found like button')
-      if (GM_config.get('HIDE_LIKE_NOTIFICATION')) {
-        hideLikeNotification()
-      }
       DEBUG.info('It\'s unclicked. Clicking it...')
       likeButton.click()
       autoLikedVideoIds.push(videoId)
