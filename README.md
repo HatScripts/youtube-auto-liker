@@ -43,7 +43,6 @@ Setting                | Description                                         | D
 Debug mode             | Log debug messages to the console                   | off
 Check frequency        | How often to attempt liking the video               | 5000 ms
 Watch threshold        | The percentage of the video watched before liking   | 50%
-Hide like notification | Hide like notification                              | off
 Like if not subscribed | Like videos from channels you are not subscribed to | off
 
 ## TODO
