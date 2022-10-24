@@ -1,4 +1,4 @@
-# youtube-auto-liker <img src="https://raw.githubusercontent.com/HatScripts/youtube-auto-liker/master/logo.svg" alt="youtube-auto-liker logo" height="48" align="right">
+# YouTube Auto-Liker <img src="https://raw.githubusercontent.com/HatScripts/youtube-auto-liker/master/logo.svg" alt="YouTube Auto-Liker logo" height="48" align="right">
 
 This userscript automatically likes videos of channels you're subscribed to on [YouTube](https://www.youtube.com/), after you've watched at least half of the video.
 
