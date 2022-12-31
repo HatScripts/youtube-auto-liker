@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.20
+// @version        1.3.21
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -60,6 +60,12 @@
         type: 'checkbox',
         default: false,
         title: 'Like videos from channels you are not subscribed to'
+      },
+      AUTO_LIKE_LIVE_STREAMS: {
+        label: 'Auto-like live streams',
+        type: 'checkbox',
+        default: false,
+        title: 'Automatically like live streams'
       }
     }
   })
@@ -137,7 +143,10 @@
     if (watchThresholdReached()) {
       try {
         if (GM_config.get('LIKE_IF_NOT_SUBSCRIBED') || isSubscribed()) {
-          like()
+          if (GM_config.get('AUTO_LIKE_LIVE_STREAMS') ||
+            window.getComputedStyle(document.querySelector('.ytp-live-badge')).display === 'none') {
+            like()
+          }
         }
       } catch (e) {
         DEBUG.info(`Failed to like video: ${e}. Will try again in ${GM_config.get('CHECK_FREQUENCY')} ms...`)
