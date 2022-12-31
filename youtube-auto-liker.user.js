@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.19
+// @version        1.3.20
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -68,21 +68,23 @@
     GM_config.open()
   })
 
-  function Debugger (name, enabled) {
-    this.debug = {}
-    if (!window.console) {
-      return () => {}
-    }
-    Object.getOwnPropertyNames(window.console).forEach(key => {
-      if (typeof window.console[key] === 'function') {
-        if (enabled) {
-          this.debug[key] = window.console[key].bind(window.console, name + ': ')
-        } else {
-          this.debug[key] = () => {}
-        }
+  class Debugger {
+    constructor (name, enabled) {
+      this.debug = {}
+      if (!window.console) {
+        return () => { }
       }
-    })
-    return this.debug
+      Object.getOwnPropertyNames(window.console).forEach(key => {
+        if (typeof window.console[key] === 'function') {
+          if (enabled) {
+            this.debug[key] = window.console[key].bind(window.console, name + ': ')
+          } else {
+            this.debug[key] = () => { }
+          }
+        }
+      })
+      return this.debug
+    }
   }
 
   const DEBUG = new Debugger(GM_info.script.name, GM_config.get('DEBUG_MODE'))
@@ -143,7 +145,7 @@
     }
   }
 
-  function isButtonPressed(button) {
+  function isButtonPressed (button) {
     return button.classList.contains('style-default-active') ||
       button.getAttribute('aria-pressed') === 'true'
   }
