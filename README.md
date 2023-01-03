@@ -8,11 +8,11 @@ This userscript automatically likes videos of channels you're subscribed to on [
 
    |                    | Tampermonkey                     | Greasemonkey | Violentmonkey
    | ------------------ | -------------------------------- | ------------ | -------------
-   | ![Chrome][c-logo]  | [Link][c-tm] ([Beta][c-tm-beta]) | -            | [Link][c-vm]
-   | ![Firefox][f-logo] | [Link][f-tm]                     | [Link][f-gm] | -
-   | ![Edge][e-logo]    | [Link][e-tm]                     | -            | -
+   | ![Chrome][c-logo]  | [Link][c-tm] ([Beta][c-tm-beta]) | -            | [Link][c-vm] ([Beta][c-vm-beta])
+   | ![Firefox][f-logo] | [Link][f-tm]                     | [Link][f-gm] | [Link][f-vm]
+   | ![Edge][e-logo]    | [Link][e-tm] ([Beta][e-tm-beta]) | -            | [Link][e-vm]
    | ![Safari][s-logo]  | [Link][s-tm]                     | -            | -
-   | ![Opera][o-logo]   | [Link][o-tm]                     | -            | [Link][o-vm]
+   | ![Opera][o-logo]   | [Link][o-tm]                     | -            | -
 
 [c-logo]: https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_24x24.png   "Chrome"
 [f-logo]: https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_24x24.png "Firefox"
@@ -22,12 +22,15 @@ This userscript automatically likes videos of channels you're subscribed to on [
 [c-tm]: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
 [c-tm-beta]: https://chrome.google.com/webstore/detail/tampermonkey-beta/gcalenpjmijncebpfijmoaglllgpjagf
 [c-vm]: https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag
+[c-vm-beta]: https://chrome.google.com/webstore/detail/violentmonkey-beta/opokoaglpekkimldnlggpoagmjegichg
 [f-tm]: https://addons.mozilla.org/firefox/addon/tampermonkey/
 [f-gm]: https://addons.mozilla.org/firefox/addon/greasemonkey/
-[e-tm]: https://www.microsoft.com/store/apps/9NBLGGH5162S
+[f-vm]: https://addons.mozilla.org/firefox/addon/violentmonkey/
+[e-tm]: https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd
+[e-tm-beta]: https://microsoftedge.microsoft.com/addons/detail/tampermonkey-beta/fcmfnpggmnlmfebfghbfnillijihnkoh
+[e-vm]: https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao
 [s-tm]: https://safari.tampermonkey.net/tampermonkey.safariextz
-[o-tm]: https://addons.opera.com/extensions/details/tampermonkey-beta/
-[o-vm]: https://addons.opera.com/extensions/details/violent-monkey/
+[o-tm]: https://addons.opera.com/en/extensions/details/tampermonkey-beta/
 
 2. Then install this script from one of the following links:
    * [GitHub](https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js) (Recommended)
