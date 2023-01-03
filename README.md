@@ -6,13 +6,13 @@ This userscript automatically likes videos of channels you're subscribed to on [
 
 1. This is a userscript. To use it you'll first need one of the following browser extensions:
 
-   |                    | Tampermonkey                     | Greasemonkey | Violentmonkey
-   | ------------------ | -------------------------------- | ------------ | -------------
-   | ![Chrome][c-logo]  | [Link][c-tm] ([Beta][c-tm-beta]) | -            | [Link][c-vm] ([Beta][c-vm-beta])
-   | ![Firefox][f-logo] | [Link][f-tm]                     | [Link][f-gm] | [Link][f-vm]
-   | ![Edge][e-logo]    | [Link][e-tm] ([Beta][e-tm-beta]) | -            | [Link][e-vm]
-   | ![Safari][s-logo]  | [Link][s-tm]                     | -            | -
-   | ![Opera][o-logo]   | [Link][o-tm]                     | -            | -
+   |                    | Tampermonkey                     | Greasemonkey | Violentmonkey                    | Userscripts
+   | ------------------ | -------------------------------- | ------------ | -------------------------------- | -----------
+   | ![Chrome][c-logo]  | [Link][c-tm] ([Beta][c-tm-beta]) | -            | [Link][c-vm] ([Beta][c-vm-beta]) |
+   | ![Firefox][f-logo] | [Link][f-tm]                     | [Link][f-gm] | [Link][f-vm]                     |
+   | ![Edge][e-logo]    | [Link][e-tm] ([Beta][e-tm-beta]) | -            | [Link][e-vm]                     |
+   | ![Safari][s-logo]  | [Link][s-tm]                     | -            | -                                | [Link][s-us]
+   | ![Opera][o-logo]   | [Link][o-tm]                     | -            | -                                |
 
 [c-logo]: https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_24x24.png   "Chrome"
 [f-logo]: https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_24x24.png "Firefox"
@@ -29,7 +29,8 @@ This userscript automatically likes videos of channels you're subscribed to on [
 [e-tm]: https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd
 [e-tm-beta]: https://microsoftedge.microsoft.com/addons/detail/tampermonkey-beta/fcmfnpggmnlmfebfghbfnillijihnkoh
 [e-vm]: https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao
-[s-tm]: https://safari.tampermonkey.net/tampermonkey.safariextz
+[s-tm]: https://www.tampermonkey.net/?browser=safari
+[s-us]: https://apps.apple.com/app/userscripts/id1463298887
 [o-tm]: https://addons.opera.com/en/extensions/details/tampermonkey-beta/
 
 2. Then install this script from one of the following links:
