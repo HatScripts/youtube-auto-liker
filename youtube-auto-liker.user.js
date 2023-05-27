@@ -97,7 +97,7 @@
 
   const SELECTORS = {
     PLAYER: '#movie_player',
-    SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer',
+    SUBSCRIBE_BUTTON: '#subscribe-button > ytd-button-renderer > yt-button-shape',
     LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
     DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2), #segmented-dislike-button button'
   }
@@ -134,7 +134,7 @@
     if (!subscribeButton) {
       throw Error('Couldn\'t find sub button')
     }
-    const subscribed = subscribeButton.hasAttribute('subscribe-button-hidden')
+    const subscribed = subscribeButton.hasAttribute('hidden')
     DEBUG.info(subscribed ? 'We are subscribed' : 'We are not subscribed')
     return subscribed
   }
