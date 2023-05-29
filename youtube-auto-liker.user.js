@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.23
+// @version        1.3.24
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -77,120 +77,121 @@
     GM_config.open()
   })
 
+  class Debugger {
+    constructor (name, enabled) {
+      this.debug = {}
+      if (!window.console) {
+        return () => { }
+      }
+      Object.getOwnPropertyNames(window.console).forEach(key => {
+        if (typeof window.console[key] === 'function') {
+          if (enabled) {
+            this.debug[key] = window.console[key].bind(window.console, name + ': ')
+          } else {
+            this.debug[key] = () => { }
+          }
+        }
+      })
+      return this.debug
+    }
+  }
+
+  var DEBUG
+
+  const SELECTORS = {
+    PLAYER: '#movie_player',
+    SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer',
+    LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
+    DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2), #segmented-dislike-button button'
+  }
+
+  const autoLikedVideoIds = []
+
   function onInit() {
-    class Debugger {
-      constructor (name, enabled) {
-        this.debug = {}
-        if (!window.console) {
-          return () => { }
-        }
-        Object.getOwnPropertyNames(window.console).forEach(key => {
-          if (typeof window.console[key] === 'function') {
-            if (enabled) {
-              this.debug[key] = window.console[key].bind(window.console, name + ': ')
-            } else {
-              this.debug[key] = () => { }
-            }
-          }
-        })
-        return this.debug
-      }
-    }
-
-    const DEBUG = new Debugger(GM_info.script.name, GM_config.get('DEBUG_MODE'))
-
-    const SELECTORS = {
-      PLAYER: '#movie_player',
-      SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer',
-      LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
-      DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2), #segmented-dislike-button button'
-    }
-
-    const autoLikedVideoIds = []
-
+    DEBUG = new Debugger(GM_info.script.name, GM_config.get('DEBUG_MODE'))
     setInterval(wait, GM_config.get('CHECK_FREQUENCY'))
+  }
 
-    function getVideoId () {
-      const elem = document.querySelector('#page-manager > ytd-watch-flexy')
-      if (elem && elem.hasAttribute('video-id')) {
-        return elem.getAttribute('video-id')
-      } else {
-        return new URLSearchParams(window.location.search).get('v')
+  function getVideoId () {
+    const elem = document.querySelector('#page-manager > ytd-watch-flexy')
+    if (elem && elem.hasAttribute('video-id')) {
+      return elem.getAttribute('video-id')
+    } else {
+      return new URLSearchParams(window.location.search).get('v')
+    }
+  }
+
+  function watchThresholdReached () {
+    const player = document.querySelector(SELECTORS.PLAYER)
+    if (player) {
+      const watched = player.getCurrentTime() / player.getDuration()
+      const watchedTarget = GM_config.get('WATCH_THRESHOLD') / 100
+      if (watched < watchedTarget) {
+        DEBUG.info(`Waiting until watch threshold reached (${watched.toFixed(2)}/${watchedTarget})...`)
+        return false
       }
     }
+    return true
+  }
 
-    function watchThresholdReached () {
-      const player = document.querySelector(SELECTORS.PLAYER)
-      if (player) {
-        const watched = player.getCurrentTime() / player.getDuration()
-        const watchedTarget = GM_config.get('WATCH_THRESHOLD') / 100
-        if (watched < watchedTarget) {
-          DEBUG.info(`Waiting until watch threshold reached (${watched.toFixed(2)}/${watchedTarget})...`)
-          return false
-        }
-      }
-      return true
+  function isSubscribed () {
+    DEBUG.info('Checking whether subscribed...')
+    const subscribeButton = document.querySelector(SELECTORS.SUBSCRIBE_BUTTON)
+    if (!subscribeButton) {
+      throw Error('Couldn\'t find sub button')
     }
+    const subscribed = subscribeButton.hasAttribute('subscribe-button-hidden')
+    DEBUG.info(subscribed ? 'We are subscribed' : 'We are not subscribed')
+    return subscribed
+  }
 
-    function isSubscribed () {
-      DEBUG.info('Checking whether subscribed...')
-      const subscribeButton = document.querySelector(SELECTORS.SUBSCRIBE_BUTTON)
-      if (!subscribeButton) {
-        throw Error('Couldn\'t find sub button')
-      }
-      const subscribed = subscribeButton.hasAttribute('subscribe-button-hidden')
-      DEBUG.info(subscribed ? 'We are subscribed' : 'We are not subscribed')
-      return subscribed
-    }
-
-    function wait () {
-      if (watchThresholdReached()) {
-        try {
-          if (GM_config.get('LIKE_IF_NOT_SUBSCRIBED') || isSubscribed()) {
-            if (GM_config.get('AUTO_LIKE_LIVE_STREAMS') ||
-              window.getComputedStyle(document.querySelector('.ytp-live-badge')).display === 'none') {
-              like()
-            }
+  function wait () {
+    if (watchThresholdReached()) {
+      try {
+        if (GM_config.get('LIKE_IF_NOT_SUBSCRIBED') || isSubscribed()) {
+          if (GM_config.get('AUTO_LIKE_LIVE_STREAMS') ||
+            window.getComputedStyle(document.querySelector('.ytp-live-badge')).display === 'none') {
+            like()
           }
-        } catch (e) {
-          DEBUG.info(`Failed to like video: ${e}. Will try again in ${GM_config.get('CHECK_FREQUENCY')} ms...`)
         }
+      } catch (e) {
+        DEBUG.info(`Failed to like video: ${e}. Will try again in ${GM_config.get('CHECK_FREQUENCY')} ms...`)
       }
     }
+  }
 
-    function isButtonPressed (button) {
-      return button.classList.contains('style-default-active') ||
-        button.getAttribute('aria-pressed') === 'true'
+  function isButtonPressed (button) {
+    return button.classList.contains('style-default-active') ||
+      button.getAttribute('aria-pressed') === 'true'
+  }
+
+  function like () {
+    DEBUG.info('Trying to like video...')
+    const likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
+    const dislikeButton = document.querySelector(SELECTORS.DISLIKE_BUTTON)
+    if (!likeButton) {
+      throw Error('Couldn\'t find like button')
     }
-
-    function like () {
-      DEBUG.info('Trying to like video...')
-      const likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
-      const dislikeButton = document.querySelector(SELECTORS.DISLIKE_BUTTON)
-      if (!likeButton) {
-        throw Error('Couldn\'t find like button')
-      }
-      if (!dislikeButton) {
-        throw Error('Couldn\'t find dislike button')
-      }
-      const videoId = getVideoId()
+    if (!dislikeButton) {
+      throw Error('Couldn\'t find dislike button')
+    }
+    const videoId = getVideoId()
+    if (isButtonPressed(likeButton)) {
+      DEBUG.info('Like button has already been clicked')
+      autoLikedVideoIds.push(videoId)
+    } else if (isButtonPressed(dislikeButton)) {
+      DEBUG.info('Dislike button has already been clicked')
+    } else if (autoLikedVideoIds.includes(videoId)) {
+      DEBUG.info('Video has already been auto-liked. User must ' +
+        'have un-liked it, so we won\'t like it again')
+    } else {
+      DEBUG.info('Found like button. It\'s unclicked. Clicking it...')
+      likeButton.click()
       if (isButtonPressed(likeButton)) {
-        DEBUG.info('Like button has already been clicked')
         autoLikedVideoIds.push(videoId)
-      } else if (isButtonPressed(dislikeButton)) {
-        DEBUG.info('Dislike button has already been clicked')
-      } else if (autoLikedVideoIds.includes(videoId)) {
-        DEBUG.info('Video has already been auto-liked. User must ' +
-          'have un-liked it, so we won\'t like it again')
+        DEBUG.info('Successfully liked video')
       } else {
-        DEBUG.info('Found like button. It\'s unclicked. Clicking it...')
-        likeButton.click()
-        if (isButtonPressed(likeButton)) {
-          autoLikedVideoIds.push(videoId)
-          DEBUG.info('Successfully liked video')
-        } else {
-          DEBUG.info('Failed to like video')
-        }
+        DEBUG.info('Failed to like video')
       }
     }
   }
