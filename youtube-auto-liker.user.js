@@ -140,7 +140,7 @@
     if (!subscribeButton) {
       throw Error('Couldn\'t find sub button')
     }
-    const subscribed = subscribeButton.hasAttribute('subscribe-button-hidden')
+    const subscribed = subscribeButton.hasAttribute('subscribe-button-invisible')
     DEBUG.info(subscribed ? 'We are subscribed' : 'We are not subscribed')
     return subscribed
   }
