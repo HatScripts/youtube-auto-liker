@@ -36,7 +36,6 @@ This userscript automatically likes videos of channels you're subscribed to on [
 2. Then install this script from one of the following links:
    * [GitHub](https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js) (Recommended)
    * [Greasy Fork](https://greasyfork.org/en/scripts/33865-youtube-auto-liker)
-   * [OpenUserJS](https://openuserjs.org/scripts/HatScripts/YouTube_Auto-Liker)
 
 ## Settings
 
