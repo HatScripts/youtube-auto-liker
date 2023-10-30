@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.25
+// @version        1.3.26
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -17,7 +17,7 @@
 // @updateurl      https://github.com/HatScripts/youtube-auto-liker/raw/master/youtube-auto-liker.user.js
 // @match          http://*.youtube.com/*
 // @match          https://*.youtube.com/*
-// @require        https://openuserjs.org/src/libs/sizzle/GM_config.js
+// @require        https://raw.githubusercontent.com/sizzlemctwizzle/GM_config/master/gm_config.js
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_registerMenuCommand
