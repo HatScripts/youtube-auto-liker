@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.26
+// @version        1.3.27
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -100,9 +100,15 @@
 
   const SELECTORS = {
     PLAYER: '#movie_player',
-    SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer',
-    LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
-    DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2), #segmented-dislike-button button'
+    SUBSCRIBE_BUTTON: ['#subscribe-button > ytd-subscribe-button-renderer'],
+    LIKE_BUTTON: [
+      '#top-level-buttons-computed like-button-view-model > button',
+      '#segmented-like-button button'
+    ],
+    DISLIKE_BUTTON: [
+      '#top-level-buttons-computed dislike-button-view-model > button',
+      '#segmented-dislike-button button'
+    ]
   }
 
   const autoLikedVideoIds = []
@@ -136,7 +142,11 @@
 
   function isSubscribed () {
     DEBUG.info('Checking whether subscribed...')
-    const subscribeButton = document.querySelector(SELECTORS.SUBSCRIBE_BUTTON)
+    let subscribeButton
+    for (const selector of SELECTORS.SUBSCRIBE_BUTTON) {
+      subscribeButton = document.querySelector(selector)
+      if (subscribeButton) { break }
+    }
     if (!subscribeButton) {
       throw Error('Couldn\'t find sub button')
     }
@@ -161,20 +171,30 @@
   }
 
   function isButtonPressed (button) {
-    return button.classList.contains('style-default-active') ||
-      button.getAttribute('aria-pressed') === 'true'
+    return button.getAttribute('aria-pressed') === 'true'
   }
 
   function like () {
     DEBUG.info('Trying to like video...')
-    const likeButton = document.querySelector(SELECTORS.LIKE_BUTTON)
-    const dislikeButton = document.querySelector(SELECTORS.DISLIKE_BUTTON)
+
+    let likeButton
+    for (const selector of SELECTORS.LIKE_BUTTON) {
+      likeButton = document.querySelector(selector)
+      if (likeButton) { break }
+    }
     if (!likeButton) {
       throw Error('Couldn\'t find like button')
+    }
+
+    let dislikeButton
+    for (const selector of SELECTORS.DISLIKE_BUTTON) {
+      dislikeButton = document.querySelector(selector)
+      if (dislikeButton) { break }
     }
     if (!dislikeButton) {
       throw Error('Couldn\'t find dislike button')
     }
+
     const videoId = getVideoId()
     if (isButtonPressed(likeButton)) {
       DEBUG.info('Like button has already been clicked')
