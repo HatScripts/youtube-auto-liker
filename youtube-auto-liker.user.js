@@ -3,7 +3,7 @@
 // @name:zh        YouTube自動點讚
 // @name:ja        YouTubeのような自動
 // @namespace      https://github.com/HatScripts/youtube-auto-liker
-// @version        1.3.26
+// @version        1.3.27
 // @description    Automatically likes videos of channels you're subscribed to
 // @description:zh 對您訂閲的頻道視頻自動點讚
 // @description:ja 購読しているチャンネルの動画が自動的に好きです
@@ -100,9 +100,9 @@
 
   const SELECTORS = {
     PLAYER: '#movie_player',
-    SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer',
-    LIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1), #segmented-like-button button',
-    DISLIKE_BUTTON: '#menu #top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2), #segmented-dislike-button button'
+    SUBSCRIBE_BUTTON: '#subscribe-button > ytd-subscribe-button-renderer, #subscribe-button-shape button.yt-spec-button-shape-next--tonal',
+    LIKE_BUTTON: '.YtLikeButtonViewModelHost button, #like-button button',
+    DISLIKE_BUTTON: '.YtDislikeButtonViewModelHost button, #dislike-button button',
   }
 
   const autoLikedVideoIds = []
@@ -140,7 +140,7 @@
     if (!subscribeButton) {
       throw Error('Couldn\'t find sub button')
     }
-    const subscribed = subscribeButton.hasAttribute('subscribe-button-invisible')
+    const subscribed = subscribeButton.hasAttribute('subscribe-button-invisible') || subscribeButton.classList.contains('yt-spec-button-shape-next--tonal')
     DEBUG.info(subscribed ? 'We are subscribed' : 'We are not subscribed')
     return subscribed
   }
