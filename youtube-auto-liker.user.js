@@ -66,16 +66,37 @@
         type: 'checkbox',
         default: false,
         title: 'Automatically like live streams'
+      },
+      WHITELISTED_CHANNELS: {
+        label: 'Whitelisted channels (one per line)',
+        type: 'textarea',
+        default: '',
+        title: 'Channel IDs to always like (one per line)\nFormat: UCxxxxxxxxxxxxxxx Optional Name\nExample: UCnCmb1vpv90EeSX5g7K4UYQ @TheLibrarianYT\n\nHow to find Channel ID:\n1. Go to channel page\n2. Click "..." (more) button\n3. Click "Share channel"\n4. Click "Copy Channel ID"'
+      },
+      BLACKLISTED_CHANNELS: {
+        label: 'Blacklisted channels (one per line)',
+        type: 'textarea',
+        default: '',
+        title: 'Channel IDs to never like (one per line)\nSame format as whitelist\nBlacklist overrides whitelist if a channel appears in both'
       }
     },
     events: {
-      init: onInit
+      init: onInit,
+      save: refreshChannelLists
     }
   })
 
   GM_registerMenuCommand('Settings', () => {
     GM_config.open()
   })
+
+  // Listen for settings changes to refresh channel lists
+  function refreshChannelLists () {
+    whitelistedChannels = parseChannelList(GM_config.get('WHITELISTED_CHANNELS'))
+    blacklistedChannels = parseChannelList(GM_config.get('BLACKLISTED_CHANNELS'))
+    
+    DEBUG.info(`Refreshed channel lists: ${Object.keys(whitelistedChannels).length} whitelisted, ${Object.keys(blacklistedChannels).length} blacklisted`)
+  }
 
   class Debugger {
     constructor (name, enabled) {
@@ -106,9 +127,151 @@
   }
 
   const autoLikedVideoIds = []
+  let whitelistedChannels = {}
+  let blacklistedChannels = {}
+
+  function parseChannelList (textareaContent) {
+    const channels = {}
+    if (!textareaContent || !textareaContent.trim()) {
+      return channels
+    }
+
+    const lines = textareaContent.split('\n').filter(line => line.trim())
+    
+    lines.forEach(line => {
+      const trimmedLine = line.trim()
+      // Match Channel ID format: UC followed by 22 characters (letters, numbers, hyphens, underscores)
+      const match = trimmedLine.match(/^(UC[\w-]{22})\s*(.*)$/)
+      if (match) {
+        const [, channelId, displayName] = match
+        channels[channelId] = displayName.trim() || channelId
+        DEBUG.info(`Parsed channel: ${channelId} (${channels[channelId]})`)
+      } else if (trimmedLine) {
+        DEBUG.warn(`Invalid channel format: ${trimmedLine}`)
+      }
+    })
+    
+    return channels
+  }
+
+  function getCurrentChannelId () {
+    DEBUG.info('Detecting current channel ID...')
+    const currentVideoId = new URLSearchParams(window.location.search).get('v')
+    
+    try {
+      // Method 1: Try to get from page data (ytInitialData) - most reliable for current video
+      if (window.ytInitialData) {
+        try {
+          // Try multiple paths in ytInitialData for better coverage
+          const contents = window.ytInitialData.contents?.twoColumnWatchNextResults?.results?.results?.contents
+          if (contents) {
+            // Look for video owner in primary info
+            const primaryInfo = contents.find(c => c.videoPrimaryInfoRenderer)?.videoPrimaryInfoRenderer
+            const secondaryInfo = contents.find(c => c.videoSecondaryInfoRenderer)?.videoSecondaryInfoRenderer
+            
+            let channelId = primaryInfo?.videoOwner?.videoOwnerRenderer?.title?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId
+            if (!channelId) {
+              channelId = secondaryInfo?.owner?.videoOwnerRenderer?.title?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId
+            }
+            if (!channelId) {
+              channelId = secondaryInfo?.owner?.videoOwnerRenderer?.navigationEndpoint?.browseEndpoint?.browseId
+            }
+            
+            if (channelId && channelId.startsWith('UC')) {
+              DEBUG.info(`Channel ID found via ytInitialData: ${channelId}`)
+              return channelId
+            }
+          }
+        } catch (e) {
+          DEBUG.debug('ytInitialData parsing failed:', e.message)
+        }
+      }
+
+      // Method 2: Try to get from DOM elements (more current than script tags)
+      const channelLink = document.querySelector('ytd-video-owner-renderer a[href*="/channel/"], ytd-video-owner-renderer a[href*="/@"], #owner a[href*="/channel/"], #owner a[href*="/@"]')
+      if (channelLink) {
+        const match = channelLink.href.match(/\/channel\/(UC[\w-]{22})/)
+        if (match) {
+          DEBUG.info(`Channel ID found via channel link: ${match[1]}`)
+          return match[1]
+        }
+      }
+
+      // Method 3: Try to get from ytd-watch-flexy element
+      const watchFlexy = document.querySelector('#page-manager > ytd-watch-flexy')
+      if (watchFlexy && watchFlexy.hasAttribute('video-owner-id')) {
+        const channelId = watchFlexy.getAttribute('video-owner-id')
+        if (channelId && channelId.startsWith('UC')) {
+          DEBUG.info(`Channel ID found via watch-flexy: ${channelId}`)
+          return channelId
+        }
+      }
+
+      // Method 4: Try to get from subscribe button
+      const subscribeButton = document.querySelector(SELECTORS.SUBSCRIBE_BUTTON)
+      if (subscribeButton) {
+        const channelId = subscribeButton.getAttribute('channel-id') || subscribeButton.getAttribute('data-channel-id')
+        if (channelId && channelId.startsWith('UC')) {
+          DEBUG.info(`Channel ID found via subscribe button: ${channelId}`)
+          return channelId
+        }
+      }
+
+      // Method 5: Try to get from canonical link
+      const canonicalLink = document.querySelector('link[rel="canonical"]')
+      if (canonicalLink) {
+        const canonicalMatch = canonicalLink.href.match(/\/channel\/(UC[\w-]{22})/)
+        if (canonicalMatch) {
+          DEBUG.info(`Channel ID found via canonical link: ${canonicalMatch[1]}`)
+          return canonicalMatch[1]
+        }
+      }
+
+      // Method 6: Try to get from page source JSON data (with video context validation)
+      const scriptTags = document.querySelectorAll('script')
+      for (const script of scriptTags) {
+        const content = script.textContent || ''
+        // Only check scripts that contain current video ID to avoid stale data
+        if (currentVideoId && content.includes(currentVideoId)) {
+          const scriptMatch = content.match(/"channelId":"(UC[\w-]{22})"/)
+          if (scriptMatch) {
+            DEBUG.info(`Channel ID found via script content (with video context): ${scriptMatch[1]}`)
+            return scriptMatch[1]
+          }
+        }
+      }
+
+      // Method 7: Try to get from meta tags
+      const metaTags = document.querySelectorAll('meta[property], meta[name]')
+      for (const meta of metaTags) {
+        const metaContent = meta.getAttribute('content') || ''
+        const metaMatch = metaContent.match(/UC[\w-]{22}/)
+        if (metaMatch) {
+          DEBUG.info(`Channel ID found via meta tag: ${metaMatch[0]}`)
+          return metaMatch[0]
+        }
+      }
+
+      DEBUG.warn('Could not detect channel ID from any source')
+      DEBUG.debug('Current URL:', window.location.href)
+      DEBUG.debug('Page title:', document.title)
+      return null
+    } catch (error) {
+      DEBUG.error(`Error detecting channel ID: ${error.message}`)
+      return null
+    }
+  }
 
   function onInit() {
     DEBUG = new Debugger(GM_info.script.name, GM_config.get('DEBUG_MODE'))
+    
+    // Parse channel lists
+    whitelistedChannels = parseChannelList(GM_config.get('WHITELISTED_CHANNELS'))
+    blacklistedChannels = parseChannelList(GM_config.get('BLACKLISTED_CHANNELS'))
+    
+    DEBUG.info(`Loaded ${Object.keys(whitelistedChannels).length} whitelisted channels`)
+    DEBUG.info(`Loaded ${Object.keys(blacklistedChannels).length} blacklisted channels`)
+    
     setInterval(wait, GM_config.get('CHECK_FREQUENCY'))
   }
 
@@ -146,10 +309,48 @@
     return subscribed
   }
 
+  function shouldLikeVideo () {
+    DEBUG.info('=== Evaluating whether to like video ===')
+    DEBUG.debug(`Current URL: ${window.location.href}`)
+    DEBUG.debug(`Current video ID: ${new URLSearchParams(window.location.search).get('v')}`)
+    
+    const channelId = getCurrentChannelId()
+    
+    if (!channelId) {
+      DEBUG.info('Could not detect channel ID, falling back to subscription logic')
+      return GM_config.get('LIKE_IF_NOT_SUBSCRIBED') || isSubscribed()
+    }
+
+    DEBUG.info(`Detected channel ID: ${channelId}`)
+    
+    // Debug: Show loaded lists
+    DEBUG.debug(`Blacklisted channels: ${Object.keys(blacklistedChannels).join(', ')}`)
+    DEBUG.debug(`Whitelisted channels: ${Object.keys(whitelistedChannels).join(', ')}`)
+
+    // Priority 1: Blacklist check (overrides everything)
+    if (blacklistedChannels[channelId]) {
+      DEBUG.info(`Channel ${blacklistedChannels[channelId]} (${channelId}) is blacklisted - will NOT like`)
+      return false
+    }
+
+    // Priority 2: Whitelist check (overrides subscription logic)
+    if (whitelistedChannels[channelId]) {
+      DEBUG.info(`Channel ${whitelistedChannels[channelId]} (${channelId}) is whitelisted - WILL like`)
+      return true
+    }
+
+    // Priority 3: Fall back to existing logic
+    DEBUG.info(`Channel ${channelId} not in whitelist/blacklist, using subscription logic`)
+    const subscribed = isSubscribed()
+    const shouldLike = GM_config.get('LIKE_IF_NOT_SUBSCRIBED') || subscribed
+    DEBUG.info(`Subscription logic result: ${shouldLike ? 'WILL' : 'will NOT'} like`)
+    return shouldLike
+  }
+
   function wait () {
     if (watchThresholdReached()) {
       try {
-        if (GM_config.get('LIKE_IF_NOT_SUBSCRIBED') || isSubscribed()) {
+        if (shouldLikeVideo()) {
           if (GM_config.get('AUTO_LIKE_LIVE_STREAMS') ||
             window.getComputedStyle(document.querySelector('.ytp-live-badge')).display === 'none') {
             like()
