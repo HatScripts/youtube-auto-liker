@@ -47,13 +47,43 @@ Debug mode             | Log debug messages to the console                   | o
 Check frequency        | How often to attempt liking the video               | 5000 ms
 Watch threshold        | The percentage of the video watched before liking   | 50%
 Like if not subscribed | Like videos from channels you are not subscribed to | off
+Auto-like live streams | Automatically like live streams                     | off
+Whitelisted channels   | Channel IDs to always like (one per line)          | (empty)
+Blacklisted channels   | Channel IDs to never like (one per line)           | (empty)
+
+### Whitelisted / Blacklisted Channels Format
+
+For both settings, enter one channel per line in the following format:
+
+```
+UCxxxxxxxxxxxxxxxxxxxxxx OptionalNameHere
+```
+
+- **Channel ID**: Starts with `UC` and is 24 characters long (letters, numbers, hyphens, underscores).
+- **Optional Name**: Anything after the Channel ID is ignored by the script, but can help you remember which channel it is.
+
+**Example:**
+
+```
+UCBR8-60-B28hp2BmDPdntcQ
+UCYO_jab_esuFRV4b17AJtAw @3Blue1Brown
+UCnCmb1vpv90EeSX5g7K4UYQ The Librarian
+```
+
+**How to find a Channel ID:**
+1. Go to the channel page on YouTube.
+2. Click the "...more" button below the channel name.
+3. Click "Share channel".
+4. Click "Copy Channel ID".
+
+**Notes:**
+- Blacklist overrides whitelist if a channel appears in both.
+- The script will warn in the console if a line is not in the correct format.
 
 ## TODO
 
 * Add settings:
   * Retries - How many times to retry liking upon failure.
-  * Whitelisted channels - A list of channels to *always* like the videos of, even if you are *not* subscribed to them.
-  * Blacklisted channels - A list of channels to *never* like the videos of, even if you are subscribed to them.
 
 ## Acknowledgements
 
